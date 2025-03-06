@@ -171,4 +171,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 - Inspired by puppeteer-extra-plugin-recaptcha.
 - Built with [Playwright](https://playwright.dev/) and [2Captcha](https://2captcha.com/).
-
