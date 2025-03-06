@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for commitizen to check history
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Install Playwright browsers
+        run: |
+          poetry run playwright install
+
+      - name: Check commit messages
+        run: |
+          poetry run cz check --rev-range HEAD^..HEAD
+
+      - name: Format with black
+        run: |
+          poetry run black --check .
+
+      - name: Lint with ruff
+        run: |
+          poetry run ruff check .
+
+      - name: Run tests
+        run: |
+          poetry run pytest tests/ -v
