@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install Poetry
+        run: |
+          echo "Installing Poetry..."
+          curl -sSL https://install.python-poetry.org | python3 - > poetry_install.log 2>&1 || {
+            echo "Poetry installation failed. Dumping logs:"
+            cat poetry_install.log
+            exit 1
+          }
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          poetry --version
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Install Playwright browsers
+        run: |
+          poetry run playwright install
+
+      - name: Install pre-commit hooks
+        run: |
+          poetry run pre-commit install
+          poetry run pre-commit install --hook-type commit-msg
+
+      - name: Run pre-commit hooks
+        run: |
+          poetry run pre-commit run --all-files
+
+      - name: Check commit messages
+        run: |
+          poetry run cz check --rev-range HEAD^..HEAD
+
+      - name: Format with black
+        run: |
+          poetry run black --check .
+
+      - name: Lint with ruff
+        run: |
+          poetry run ruff check .
+
+      - name: Run tests
+        run: |
+          poetry run pytest tests/ -v
