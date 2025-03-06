@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "captcha-solver"
+version = "0.1.0"
+description = "A Python Playwright plugin to solve reCAPTCHA v2 challenges using 2Captcha"
+authors = ["Muhammad Hammad Faisal <hammadfaisal178@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/M-Hammad-Faisal/captcha-resolver"
+repository = "https://github.com/M-Hammad-Faisal/captcha-resolver"
+keywords = ["captcha", "recaptcha", "playwright", "2captcha", "automation"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.31.0"
+playwright = "^1.44.0"
+
+[tool.poetry.scripts]
+build-finalize = "scripts.build_finalize:main"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.2.2"
+pytest-asyncio = "^0.23.7"
+black = "^24.8.0"
+ruff = "^0.6.8"
+cowsay = "^6.1"
+commitizen = "^3.29.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+line-length = 100
+lint.select = ["E", "F", "W"]
+lint.ignore = ["E501"]
