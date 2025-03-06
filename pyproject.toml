@@ -10,7 +10,7 @@ repository = "https://github.com/M-Hammad-Faisal/captcha-resolver"
 keywords = ["captcha", "recaptcha", "playwright", "2captcha", "automation"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 requests = "^2.31.0"
 playwright = "^1.44.0"
 
@@ -24,6 +24,7 @@ black = "^24.8.0"
 ruff = "^0.6.8"
 cowsay = "^6.1"
 commitizen = "^3.29.0"
+pre-commit = "^3.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -39,3 +40,8 @@ line-length = 100
 line-length = 100
 lint.select = ["E", "F", "W"]
 lint.ignore = ["E501"]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+tag_format = "v$version"
