@@ -13,17 +13,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Needed for commitizen to check history
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.8'
+          python-version: '3.9'
 
       - name: Install Poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
+          echo "Installing Poetry..."
+          curl -sSL https://install.python-poetry.org | python3 - > poetry_install.log 2>&1 || {
+            echo "Poetry installation failed. Dumping logs:"
+            cat poetry_install.log
+            exit 1
+          }
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+          poetry --version
 
       - name: Install dependencies
         run: |
@@ -32,6 +38,15 @@ jobs:
       - name: Install Playwright browsers
         run: |
           poetry run playwright install
+
+      - name: Install pre-commit hooks
+        run: |
+          poetry run pre-commit install
+          poetry run pre-commit install --hook-type commit-msg
+
+      - name: Run pre-commit hooks
+        run: |
+          poetry run pre-commit run --all-files
 
       - name: Check commit messages
         run: |
