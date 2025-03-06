@@ -17,7 +17,7 @@ playwright = "^1.44.0"
 [tool.poetry.scripts]
 build-finalize = "scripts.build_finalize:main"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^8.2.2"
 pytest-asyncio = "^0.23.7"
 black = "^24.8.0"
@@ -45,3 +45,8 @@ lint.ignore = ["E501"]
 name = "cz_conventional_commits"
 version = "0.1.0"
 tag_format = "v$version"
+version_files = [
+    "pyproject.toml:version",
+    "__init__.py:__version__"
+]
+bump_message = "bump: version $current_version → $new_version"
