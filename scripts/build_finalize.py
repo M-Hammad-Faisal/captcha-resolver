@@ -2,6 +2,7 @@ import subprocess
 import sys
 import cowsay
 
+
 def main():
     try:
         # Check last commit message with commitizen
@@ -25,6 +26,7 @@ def main():
     except subprocess.CalledProcessError as e:
         print(f"Error during build process: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
